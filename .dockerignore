@@ -1,0 +1,40 @@
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Data directories (will be mounted as volumes)
+data/uploads/*
+data/chroma_db/*
+!data/uploads/.gitkeep
+!data/chroma_db/.gitkeep
+
+# Environment
+.env
+.env.local
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Demo content (optional - remove this line if you want to include demo in Docker image)
+demo_content/
+
+# Documentation
+README.md
+*.md

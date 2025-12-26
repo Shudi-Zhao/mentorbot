@@ -1,16 +1,16 @@
-# Use Python 3.11 slim image
+# MentorBot RAG Application Dockerfile
 FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
+# Copy requirements first (for better caching)
 COPY requirements.txt .
 
 # Install Python dependencies
@@ -18,21 +18,21 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY app/ ./app/
+COPY demo_content/ ./demo_content/
 
-# Create data directories
-RUN mkdir -p /app/data/uploads /app/data/chroma_db
+# Create directories for persistent storage
+RUN mkdir -p /app/data/uploads /app/data/chroma_db /app/logs
 
-# Expose Streamlit port
-EXPOSE 8501
+# Expose port for Streamlit
+EXPOSE 8503
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV STREAMLIT_SERVER_PORT=8501
-ENV STREAMLIT_SERVER_ADDRESS=0.0.0.0
+# Health check using Streamlit health endpoint
+HEALTHCHECK CMD curl --fail http://localhost:8503/_stcore/health
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8501/_stcore/health || exit 1
-
-# Run Streamlit app
-CMD ["streamlit", "run", "app/main.py", "--server.address", "0.0.0.0"]
+# Run the MentorBot application
+ENTRYPOINT ["streamlit", "run", "app/main.py", \
+    "--server.port=8503", \
+    "--server.address=0.0.0.0", \
+    "--browser.serverAddress=rag.shudizhao.com", \
+    "--server.headless=true", \
+    "--browser.gatherUsageStats=false"]

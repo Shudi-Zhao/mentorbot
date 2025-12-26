@@ -79,3 +79,4 @@ docker-volumes/
 *.md
 !README.md
 !demo_content/data_scientist_onboarding.md
+!deployment.md
