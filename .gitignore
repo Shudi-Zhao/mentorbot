@@ -74,3 +74,8 @@ docker-volumes/
 *.bak
 *.backup
 *~.nib
+
+# Markdown files - ignore all except README.md and demo file
+*.md
+!README.md
+!demo_content/data_scientist_onboarding.md
