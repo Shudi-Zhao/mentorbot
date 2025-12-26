@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  rag-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mini-rag-mvp
+    ports:
+      - "8501:8501"
+    volumes:
+      # Persist uploaded files
+      - ./data/uploads:/app/data/uploads
+      # Persist ChromaDB data
+      - ./data/chroma_db:/app/data/chroma_db
+      # Mount app code for development (optional - comment out for production)
+      - ./app:/app/app
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  uploads:
+  chroma_db:
