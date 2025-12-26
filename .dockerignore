@@ -32,9 +32,6 @@ data/chroma_db/*
 .DS_Store
 Thumbs.db
 
-# Demo content (optional - remove this line if you want to include demo in Docker image)
-demo_content/
-
-# Documentation
+# Documentation (keep deployment.md for reference)
+!deployment.md
 README.md
-*.md
